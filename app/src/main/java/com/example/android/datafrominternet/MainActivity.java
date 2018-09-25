@@ -15,12 +15,14 @@
  */
 package com.example.android.datafrominternet;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,7 +58,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int menuItemThatWasSelected = item.getItemId();
         if (menuItemThatWasSelected == R.id.action_search) {
+            Context context = MainActivity.this;
+            String message = "Search clicked";
 
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
