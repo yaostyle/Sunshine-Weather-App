@@ -21,7 +21,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,39 +34,50 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
-    // (26) Create an EditText variable called mSearchBoxEditText
-    EditText mSearchBoxEditText;
-    // (27) Create a TextView variable called mUrlDisplayTextView
-    TextView mUrlDisplayTextView;
-    // (28) Create a TextView variable called mSearchResultsTextView
-    TextView mSearchResultsTextView;
+    private EditText mSearchBoxEditText;
+    private TextView mUrlDisplayTextView;
+    private TextView mSearchResultsTextView;
+    private TextView mErrorMessageDisplay;
+    private ProgressBar mLoadingIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // (29) Use findViewById to get a reference to mSearchBoxEditText
         mSearchBoxEditText = (EditText) findViewById(R.id.et_search_box);
-
-        // (30) Use findViewById to get a reference to mUrlDisplayTextView
         mUrlDisplayTextView = (TextView) findViewById(R.id.tv_url_display);
-
-        // (31) Use findViewById to get a reference to mSearchResultsTextView
         mSearchResultsTextView = (TextView) findViewById(R.id.tv_github_search_results_json);
+        mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
+        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
     }
 
     private void makeGithubSearchQuery() {
         String githubQuery = mSearchBoxEditText.getText().toString();
         URL githubtSearchUrl = NetworkUtils.buildUrl(githubQuery);
         mUrlDisplayTextView.setText(githubtSearchUrl.toString());
-
-        String githubSearchResults = null;
         new GithubQueryTask().execute(githubtSearchUrl);
 
     }
 
+    private void showJsonDataView() {
+        mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+        mSearchResultsTextView.setVisibility(View.VISIBLE);
+    }
+
+    private void showErrorMessage() {
+        mSearchResultsTextView.setVisibility(View.INVISIBLE);
+        mErrorMessageDisplay.setVisibility(View.VISIBLE);
+    }
+
     public class GithubQueryTask extends AsyncTask<URL, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mLoadingIndicator.setVisibility(View.VISIBLE);
+        }
+
         @Override
         protected String doInBackground(URL... urls) {
             URL searchUrl = urls[0];
@@ -80,14 +93,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            if (s !=null && !s.equals("")) {
-                mSearchResultsTextView.setText(s);
+        protected void onPostExecute(String githubSearchResults) {
+            mLoadingIndicator.setVisibility(View.INVISIBLE);
+            if (githubSearchResults != null && !githubSearchResults.equals("")) {
+                showJsonDataView();
+                mSearchResultsTextView.setText(githubSearchResults);
+            } else {
+                showErrorMessage();
             }
         }
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -15,11 +15,6 @@
   limitations under the License.
 -->
 
-<!--(1) Change the ConstraintLayout to a LinearLayout-->
-<!--(2) Make the orientation vertical-->
-<!--(3) Give left, right, and top padding of 16dp-->
-<!--(4) Remove the line that declares the id, we don't need it-->
-<!--(5) Remove the xmlns:app declaration, we don't need that anymore-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
@@ -29,14 +24,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--(6) Delete this TextView-->
-
-    <!--(7) Add an EditText-->
-    <!--(8) Give the EditText an id of @+id/et_search_box-->
-    <!--(9) Set the text size to 22sp-->
-    <!--(10) Set the width to match_parent and the height to wrap_content-->
-    <!--(11) Provide a hint telling the user to enter a query and then click search-->
-    <EditText
+   <EditText
         android:id="@+id/et_search_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,12 +32,6 @@
         android:hint="Type a query for Github!"/>
 
 
-    <!--(12) Add a TextView-->
-    <!--(13) Give the TextView an id of @+id/tv_url_display-->
-    <!--(14) Set the text size to 22sp-->
-    <!--(15) Set the width to wrap_content and the height to wrap_content-->
-    <!--(16) Give the TextView a top margin of 8dp-->
-    <!--(17) Set the text to tell the user their search URL will show up here when they click search-->
     <TextView
         android:id="@+id/tv_url_display"
         android:layout_width="wrap_content"
@@ -59,28 +41,41 @@
         android:text="Enter a search query and your URL will show up here!"/>
 
 
-    <!--(18) Add a ScrollView-->
-    <!--(19) Set the width to match_parent and the height to wrap_content-->
-    <!--(20) Set the top margin to 16dp-->
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="16dp">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/tv_github_search_results_json"
+                android:textSize="18sp"
+                android:text="Make a search and your result will show up here!"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </ScrollView>
+
         <TextView
-            android:id="@+id/tv_github_search_results_json"
-            android:textSize="18sp"
-            android:text="Make a search and your result will show up here!"
+            android:id="@+id/tv_error_message_display"
+            android:textSize="22sp"
+            android:paddingTop="16dp"
+            android:visibility="invisible"
+            android:text="@string/error_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-    </ScrollView>
+        <ProgressBar
+            android:id="@+id/pb_loading_indicator"
+            android:layout_width="42dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:visibility="invisible"/>
 
-
-        <!--(21) Within the ScrollView, add a TextView-->
-        <!--(22) Give the TextView an id of @+id/tv_github_search_results_json-->
-        <!--(23) Set the text size to 18sp-->
-        <!--(24) Set the height and width to wrap_content-->
-        <!--(25) Set the text to something that tells the user to make a search-->
+    </FrameLayout>
 
 </LinearLayout>
