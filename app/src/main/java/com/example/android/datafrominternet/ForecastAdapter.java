@@ -3,6 +3,7 @@ package com.example.android.datafrominternet;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View.OnClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -11,19 +12,33 @@ import java.util.List;
 
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapterViewHolder> {
     private String[] mWeatherData;
+    private final ForecastAdapterOnClickHandler mClickHandler;
 
-    public ForecastAdapter() {
-
+    public interface ForecastAdapterOnClickHandler {
+        void onClick(String weatherForDay);
     }
 
-    public class ForecastAdapterViewHolder extends RecyclerView.ViewHolder {
+    public ForecastAdapter(ForecastAdapterOnClickHandler clickHandler) {
+        mClickHandler = clickHandler;
+    }
+
+    public class ForecastAdapterViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
         public final TextView mWeatherTextView;
 
         public ForecastAdapterViewHolder(View view) {
             super(view);
             mWeatherTextView = (TextView) itemView.findViewById(R.id.tv_weather_data);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int adapterPosition = getAdapterPosition();
+            String weatherForDay = mWeatherData[adapterPosition];
+            mClickHandler.onClick(weatherForDay);
         }
     }
+
 
     @Override
     public ForecastAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -52,4 +67,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         mWeatherData = weatherData;
         notifyDataSetChanged();
     }
+
+
 }

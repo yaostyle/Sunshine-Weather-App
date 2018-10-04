@@ -15,6 +15,7 @@
  */
 package com.example.android.datafrominternet;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,13 +27,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.android.datafrominternet.data.SunshinePreferences;
 import com.example.android.datafrominternet.utilities.NetworkUtils;
 import com.example.android.datafrominternet.utilities.OpenWeatherJsonUtils;
 
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ForecastAdapter.ForecastAdapterOnClickHandler {
     private RecyclerView mRecyclerView;
     private ForecastAdapter mForecastAdapter;
     private TextView mErrorMessageDisplay;
@@ -56,13 +59,19 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        mForecastAdapter = new ForecastAdapter();
+        mForecastAdapter = new ForecastAdapter(this);
 
         mRecyclerView.setAdapter(mForecastAdapter);
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
         loadWeatherData();
+    }
+
+    @Override
+    public void onClick(String weatherForDay) {
+        Context context = this;
+        Toast.makeText(context, weatherForDay, Toast.LENGTH_SHORT).show();
     }
 
     // Create a method that will get the user's preferred location
