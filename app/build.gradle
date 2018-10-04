@@ -21,6 +21,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:25.1.0'
+    implementation 'com.android.support:recyclerview-v7:25.1.0'
 
     // (32) Remove the ConstraintLayout dependency as we aren't using it for these simple projects
 }
