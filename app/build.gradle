@@ -24,4 +24,5 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:25.1.0'
 
     // (32) Remove the ConstraintLayout dependency as we aren't using it for these simple projects
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 }
