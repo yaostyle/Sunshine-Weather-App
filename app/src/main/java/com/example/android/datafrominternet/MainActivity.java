@@ -17,11 +17,13 @@ package com.example.android.datafrominternet;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
     private ForecastAdapter mForecastAdapter;
     private TextView mErrorMessageDisplay;
     private ProgressBar mLoadingIndicator;
+    private static final String TAG = "MainActivity";
 
 
     @Override
@@ -138,6 +141,23 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
             }
 
         }
+
+
+    }
+
+    private void openLocationInMap() {
+        String addressString = "1600 Ampitheatre Parkway, Mountain View, CA";
+        Uri geoLocation = Uri.parse("geo:0,0?q=" + addressString);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Log.d(TAG, "Couldn't call " + geoLocation.toString()
+                    + ", no receiving app installed!");
+        }
     }
 
     @Override
@@ -153,6 +173,11 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
 
         if (id == R.id.action_refresh) {
             loadWeatherData();
+            return true;
+        }
+
+        if (id == R.id.action_map) {
+            openLocationInMap();
             return true;
         }
 
